@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
@@ -17,15 +18,21 @@ import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.viewinterop.AndroidView
+import com.example.week5_assignment.xml.TodoXml
+import com.example.week5_assignment.ui.theme.Week5_assignmentTheme
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            TabLayout()
+            Week5_assignmentTheme {
+                TabLayout()
+            }
         }
     }
 }
@@ -58,7 +65,10 @@ fun TabLayout() {
             when (page) {
                 0 -> StartLayout()
                 1 -> TodoLayout()
-                2 -> UserProfile()
+                2 -> AndroidView(
+                    factory = { context -> TodoXml(context) },
+                    modifier = Modifier.fillMaxSize()
+                )
             }
         }
     }

@@ -14,7 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.myapplication.UserInfo
-
+val via = "a"
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun UserInfoForm(
@@ -48,7 +48,7 @@ fun UserInfoForm(
         TextField(
             value = userInfo.nickname,
             onValueChange = { onUserInfoChange(userInfo.copy(nickname = it)) },
-            label = { Text("별명을 입력해주세요") },
+            label = { Text("$via별명을 입력해주세요") },
             modifier = Modifier.fillMaxWidth()
         )
         TextField(

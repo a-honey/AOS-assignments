@@ -1,4 +1,4 @@
-package com.example.week5_assignment
+package com.example.week5_assignment.ui
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize

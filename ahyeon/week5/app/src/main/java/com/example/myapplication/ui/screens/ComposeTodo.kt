@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.*
@@ -14,9 +15,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import com.example.myapplication.ui.components.TodoSubmitForm
 
+data class TodoItemData(
+    var isChecked: Boolean,
+    val value: String
+)
 
 @Composable
 fun ComposeTodo() {
@@ -24,7 +30,7 @@ fun ComposeTodo() {
         mutableStateOf("")
     }
     var currentTodoListValue by remember {
-        mutableStateOf(listOf<String>())
+        mutableStateOf(listOf<TodoItemData>())
     }
 
     Column {
@@ -34,7 +40,12 @@ fun ComposeTodo() {
             items(currentTodoListValue.size){
                 index ->
                 TodoItem(
-                    text=currentTodoListValue[index],
+                    isChecked = currentTodoListValue[index].isChecked,
+                    onToggleIsChange = {
+                        currentTodoListValue = currentTodoListValue.toMutableList().apply{
+                            this[index] = this[index].copy(isChecked = !currentTodoListValue[index].isChecked)
+                        }},
+                    text = currentTodoListValue[index].value,
                     onDelete = {
                         currentTodoListValue = currentTodoListValue.toMutableList().apply{
                             removeAt(index)
@@ -47,7 +58,10 @@ fun ComposeTodo() {
             value=currentTodoFieldValue,
             onValueChange = {currentTodoFieldValue=it},
             onClickAddTodo = {
-                currentTodoListValue = currentTodoListValue + currentTodoFieldValue
+                currentTodoListValue = currentTodoListValue + TodoItemData(
+                    isChecked = false,
+                    value = currentTodoFieldValue
+                )
                 currentTodoFieldValue = ""
             }
         )
@@ -56,12 +70,19 @@ fun ComposeTodo() {
 
 @Composable
 fun TodoItem(
+    isChecked: Boolean,
+    onToggleIsChange: () -> Unit,
     text: String,
     onDelete: ()->Unit,
     onEdit:(()->Unit)? = null
 ){
     Row {
-        Text(text =  text)
+        Button(onClick = onToggleIsChange, modifier = Modifier){
+            Text(text =  text,
+                style = MaterialTheme.typography.bodyMedium.copy(
+                    textDecoration = if (isChecked) TextDecoration.LineThrough else TextDecoration.None
+                ))
+        }
         onEdit?.let{
             Button(onClick = it) {
                 Row {

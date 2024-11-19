@@ -7,14 +7,17 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.text.input.TextFieldValue
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TodoSubmitForm() {
+fun TodoSubmitForm(
+    value: String,
+    onValueChange: (String)->Unit,
+    onClickAddTodo: ()->Unit
+) {
     Row {
-       TextField(value = "", onValueChange = {})
-        Button(onClick = { /*TODO*/ }) {
+       TextField(value = value, onValueChange = onValueChange)
+        Button(onClick =  onClickAddTodo) {
             Text(text = "추가")
         }
     }
